@@ -1,0 +1,206 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f0f7 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.navbar {
+    background: linear-gradient(90deg, #0D47A1 0%, #1E88E5 100%) !important;
+    box-shadow: 0 4px 15px rgba(13, 71, 161, 0.15);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: #fff !important;
+}
+
+.nav-link:hover {
+    color: #FFD700 !important;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #0D47A1 0%, #1E88E5 100%);
+    padding: 120px 0;
+    margin-bottom: 50px;
+    color: white;
+}
+
+.hero-section h1 {
+    font-weight: 700;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.hero-section p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(13, 71, 161, 0.08);
+    border: 2px solid #E3F2FD;
+    transition: all 0.3s ease;
+    padding: 2rem;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(13, 71, 161, 0.15);
+    border-color: #FFD700;
+}
+
+.feature-card h3 {
+    color: #0D47A1;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(13, 71, 161, 0.08);
+    background: white;
+    transition: all 0.3s ease;
+    border-left: 4px solid #FFD700;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(13, 71, 161, 0.12);
+}
+
+.card-title {
+    color: #0D47A1;
+    font-weight: 600;
+}
+
+.card-subtitle {
+    color: #FFD700 !important;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #0D47A1 0%, #1E88E5 100%);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 0.6rem 1.5rem;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #1E88E5 0%, #0D47A1 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 71, 161, 0.25);
+}
+
+.btn-light {
+    background: #FFD700;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #0D47A1 !important;
+    transition: all 0.3s ease;
+}
+
+.btn-light:hover {
+    background: #FFC107;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.25);
+}
+
+.btn-secondary {
+    background: #E0E0E0;
+    border: none;
+    border-radius: 8px;
+    color: #333 !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #BDBDBD;
+    transform: translateY(-2px);
+}
+
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(13, 71, 161, 0.2);
+}
+
+.modal-header {
+    background: linear-gradient(90deg, #0D47A1 0%, #1E88E5 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 2px solid #E3F2FD;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #FFD700;
+    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.15);
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #0D47A1 0%, #1E88E5 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+}
+
+.profile-header h1 {
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(13, 71, 161, 0.08);
+    border-left: 4px solid #FFD700;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-card h5 {
+    color: #0D47A1;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.badge-primary {
+    background: linear-gradient(90deg, #0D47A1 0%, #1E88E5 100%);
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}

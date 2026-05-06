@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Prácticas Profesionales</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">📚 Prácticas 360</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="ofertas.html">Ver Ofertas</a>
+                    </li>
+                    <li class="nav-item" id="nav-perfil" style="display:none;">
+                        <a class="nav-link" href="profile.html">Mi Perfil</a>
+                    </li>
+                    <li class="nav-item" id="nav-login">
+                        <a class="nav-link" href="#" onclick="showLoginModal(event)">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item" id="nav-logout" style="display:none;">
+                        <a class="nav-link" href="#" onclick="logout(event)">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section text-center py-5">
+        <div class="container">
+            <h1>Encuentra tu Práctica Profesional Ideal</h1>
+            <p class="lead">Conecta con oportunidades en tu área de especialidad y acelera tu carrera profesional.</p>
+            <a href="ofertas.html" class="btn btn-light btn-lg">Explorar Ofertas</a>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3>🔍 Filtrado Inteligente</h3>
+                    <p>Busca ofertas por especialidad, requisitos académicos y ubicación.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3>⚡ Oportunidades Actualizadas</h3>
+                    <p>Accede a las últimas vacantes de las mejores empresas del sector.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3>👤 Perfil Personalizado</h3>
+                    <p>Guarda tus preferencias y recibe recomendaciones exclusivas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 style="color: #0D47A1; font-weight: 700;">¿Por qué usar nuestra plataforma?</h2>
+                <ul style="font-size: 1.1rem; color: #555; margin-top: 2rem;">
+                    <li>✓ Consolidación de múltiples fuentes en un único lugar</li>
+                    <li>✓ Reducción del 40% en tiempo de búsqueda</li>
+                    <li>✓ Filtros avanzados por especialidad</li>
+                    <li>✓ Interfaz intuitiva y fácil de usar</li>
+                    <li>✓ Acceso 24/7 a nuevas oportunidades</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div style="background: linear-gradient(135deg, #0D47A1 0%, #1E88E5 100%); border-radius: 12px; padding: 3rem; color: white; text-align: center;">
+                    <h3>Estadísticas de Éxito</h3>
+                    <div style="margin-top: 2rem;">
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">+500</div>
+                        <div>Ofertas activas</div>
+                    </div>
+                    <hr style="background: rgba(255,255,255,0.3);">
+                    <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">+1000</div>
+                    <div>Estudiantes registrados</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Iniciar Sesión</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="landing.js"></script>
+</body>
+</html>
