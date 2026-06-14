@@ -1,40 +1,32 @@
 const API_URL = 'http://localhost:5002/ofertas';
 
-function checkLogin() {
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-    const navLogin = document.getElementById('nav-login');
-    const navLogout = document.getElementById('nav-logout');
-    const navPerfil = document.getElementById('nav-perfil');
+function checkAccess() {
+    const content = document.getElementById('ofertas-content');
+    const loginRequired = document.getElementById('login-required');
 
-    if (isLoggedIn) {
-        navLogin.style.display = 'none';
-        navLogout.style.display = 'block';
-        navPerfil.style.display = 'block';
-    } else {
-        navLogin.style.display = 'block';
-        navLogout.style.display = 'none';
-        navPerfil.style.display = 'none';
+    if (!isLoggedIn()) {
+        content.style.display = 'none';
+        loginRequired.style.display = 'block';
+        return false;
     }
-}
 
-function showLoginModal(event) {
-    event.preventDefault();
-    const modal = new bootstrap.Modal(document.getElementById('loginModal'));
-    modal.show();
-}
-
-function logout(event) {
-    event.preventDefault();
-    localStorage.removeItem('loggedIn');
-    localStorage.removeItem('userEmail');
-    checkLogin();
-    window.location.href = 'index.html';
+    content.style.display = 'block';
+    loginRequired.style.display = 'none';
+    return true;
 }
 
 async function cargarOfertas(especialidad = '') {
     try {
         const url = especialidad ? `${API_URL}?especialidad=${encodeURIComponent(especialidad)}` : API_URL;
-        const response = await fetch(url);
+        const response = await authFetch(url);
+
+        if (response.status === 401) {
+            clearSession();
+            updateNav();
+            checkAccess();
+            return;
+        }
+
         const ofertas = await response.json();
         mostrarOfertas(ofertas);
     } catch (error) {
@@ -90,42 +82,26 @@ function guardarFavorito(titulo) {
     }
 }
 
+function onLoginSuccess() {
+    if (checkAccess()) {
+        cargarOfertas();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    checkLogin();
-    cargarOfertas();
+    if (checkAccess()) {
+        cargarOfertas();
+    }
 
     // Filtrar cuando cambies el select
     document.getElementById('filtro-especialidad').addEventListener('change', filtrarOfertas);
-    
+
     // Botón filtrar manual
     document.getElementById('btn-filtrar').addEventListener('click', filtrarOfertas);
-    
+
     // Botón limpiar
     document.getElementById('btn-limpiar').addEventListener('click', () => {
         document.getElementById('filtro-especialidad').value = '';
         cargarOfertas();
     });
-
-    const loginForm = document.querySelector('#loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (email && password) {
-                localStorage.setItem('loggedIn', 'true');
-                localStorage.setItem('userEmail', email);
-                localStorage.setItem('loginDate', new Date().toLocaleDateString('es-ES'));
-                
-                alert('¡Inicio de sesión exitoso!');
-                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
-                checkLogin();
-                
-                document.getElementById('loginForm').reset();
-            } else {
-                alert('Por favor, ingresa tus credenciales.');
-            }
-        });
-    }
 });

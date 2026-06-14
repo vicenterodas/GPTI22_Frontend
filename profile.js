@@ -1,9 +1,8 @@
-function checkLogin() {
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+function checkAccess() {
     const profileContent = document.getElementById('profile-content');
     const loginRequired = document.getElementById('login-required');
 
-    if (!isLoggedIn) {
+    if (!isLoggedIn()) {
         profileContent.style.display = 'none';
         loginRequired.style.display = 'block';
         return false;
@@ -17,10 +16,10 @@ function checkLogin() {
 
 function loadProfile() {
     const email = localStorage.getItem('userEmail') || 'Usuario';
+    const nombre = localStorage.getItem('userNombre') || email.split('@')[0];
     const loginDate = localStorage.getItem('loginDate') || 'No disponible';
-    const firstName = email.split('@')[0];
 
-    document.getElementById('user-name').textContent = `Bienvenido, ${firstName}!`;
+    document.getElementById('user-name').textContent = `Bienvenido, ${nombre}!`;
     document.getElementById('user-email').textContent = email;
     document.getElementById('user-date').textContent = loginDate;
 
@@ -48,13 +47,6 @@ function removeFavorite(index) {
     favoritos.splice(index, 1);
     localStorage.setItem('favoritos', JSON.stringify(favoritos));
     loadFavorites();
-}
-
-function logout(event) {
-    event.preventDefault();
-    localStorage.removeItem('loggedIn');
-    localStorage.removeItem('userEmail');
-    window.location.href = 'index.html';
 }
 
 function goToOffers() {
@@ -92,7 +84,7 @@ function loadPreferences() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (checkLogin()) {
+    if (checkAccess()) {
         loadPreferences();
     }
 });
