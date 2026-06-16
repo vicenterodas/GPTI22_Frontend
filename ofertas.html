@@ -33,48 +33,79 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h1 style="color: #0D47A1; font-weight: 700; margin-bottom: 2rem;">Ofertas de Prácticas Profesionales</h1>
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <select id="filtro-especialidad" class="form-control">
-                    <option value="">-- Todas las especialidades --</option>
-                    <option value="Ingeniería de Software">Ingeniería de Software</option>
-                    <option value="Ciencia de Datos">Ciencia de Datos</option>
-                    <option value="Redes y Telecomunicaciones">Redes y Telecomunicaciones</option>
-                    <option value="Ciberseguridad">Ciberseguridad</option>
-                    <option value="Inteligencia Artificial">Inteligencia Artificial</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <button id="btn-filtrar" class="btn btn-primary">🔍 Filtrar</button>
-                <button id="btn-limpiar" class="btn btn-secondary">Limpiar</button>
-            </div>
-        </div>
-        <div id="ofertas-container" class="row">
-            <!-- Ofertas se cargarán aquí -->
+    <div id="login-required" style="display:none;">
+        <div class="container mt-5 text-center">
+            <h2 style="color: #0D47A1;">🔒 Acceso Restringido</h2>
+            <p>Debes iniciar sesión para ver las ofertas de prácticas.</p>
+            <button class="btn btn-primary" onclick="showLoginModal(event)">Iniciar Sesión</button>
         </div>
     </div>
 
-    <!-- Modal de Login -->
-    <div class="modal fade" id="loginModal" tabindex="-1">
+    <div id="ofertas-content" style="display:none;">
+        <div class="container mt-5">
+            <h1 style="color: #0D47A1; font-weight: 700; margin-bottom: 2rem;">Ofertas de Prácticas Profesionales</h1>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <select id="filtro-especialidad" class="form-control">
+                        <option value="">-- Todas las especialidades --</option>
+                        <option value="Ingeniería de Software">Ingeniería de Software</option>
+                        <option value="Ciencia de Datos">Ciencia de Datos</option>
+                        <option value="Redes y Telecomunicaciones">Redes y Telecomunicaciones</option>
+                        <option value="Ciberseguridad">Ciberseguridad</option>
+                        <option value="Inteligencia Artificial">Inteligencia Artificial</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <button id="btn-filtrar" class="btn btn-primary">🔍 Filtrar</button>
+                    <button id="btn-limpiar" class="btn btn-secondary">Limpiar</button>
+                </div>
+            </div>
+            <div id="ofertas-container" class="row">
+                <!-- Ofertas se cargarán aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Autenticación -->
+    <div class="modal fade" id="authModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Iniciar Sesión</h5>
+                    <h5 class="modal-title" id="authModalTitle">Iniciar Sesión</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="loginForm">
+                        <div id="login-error" class="alert alert-danger d-none"></div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="email" required>
+                            <label for="login-email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="login-email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="password" required>
+                            <label for="login-password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="login-password" required>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                        <p class="text-center mt-3 mb-0">¿No tienes cuenta? <a href="#" id="show-register">Regístrate</a></p>
+                    </form>
+
+                    <form id="registerForm" class="d-none">
+                        <div id="register-error" class="alert alert-danger d-none"></div>
+                        <div id="register-success" class="alert alert-success d-none"></div>
+                        <div class="mb-3">
+                            <label for="register-nombre" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="register-nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="register-email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="register-email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="register-password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="register-password" minlength="6" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Crear Cuenta</button>
+                        <p class="text-center mt-3 mb-0">¿Ya tienes cuenta? <a href="#" id="show-login">Inicia Sesión</a></p>
                     </form>
                 </div>
             </div>
@@ -82,6 +113,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
