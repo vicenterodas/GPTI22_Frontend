@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5002';
+// API_BASE_URL se define en config.js (cargado antes de este archivo).
 
 function getToken() {
     return localStorage.getItem('authToken');
@@ -20,6 +20,26 @@ function clearSession() {
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userNombre');
     localStorage.removeItem('loginDate');
+    localStorage.removeItem('userId');
+}
+
+// El login no devuelve el id del usuario, así que lo obtenemos de GET /me
+// y lo guardamos para poder consumir endpoints que requieren usuario_id
+// (por ejemplo, postulaciones).
+async function ensureUserId() {
+    const cached = localStorage.getItem('userId');
+    if (cached) return cached;
+
+    try {
+        const response = await authFetch(`${API_BASE_URL}/me`);
+        if (!response.ok) return null;
+        const data = await response.json();
+        localStorage.setItem('userId', data.id);
+        return String(data.id);
+    } catch (error) {
+        console.error('No se pudo obtener el usuario actual (GET /me):', error);
+        return null;
+    }
 }
 
 function updateNav() {
@@ -39,7 +59,7 @@ async function logout(event) {
     clearSession();
     if (token) {
         try {
-            await fetch(`${API_BASE}/logout`, {
+            await fetch(`${API_BASE_URL}/logout`, {
                 method: 'POST',
                 headers: { 'Authorization': 'Bearer ' + token }
             });
@@ -94,7 +114,7 @@ async function handleLoginSubmit(event) {
     errorBox.classList.add('d-none');
 
     try {
-        const response = await fetch(`${API_BASE}/login`, {
+        const response = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
@@ -105,6 +125,7 @@ async function handleLoginSubmit(event) {
         }
 
         setSession(data);
+        await ensureUserId();
         updateNav();
         bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
         document.getElementById('loginForm').reset();
@@ -129,7 +150,7 @@ async function handleRegisterSubmit(event) {
     successBox.classList.add('d-none');
 
     try {
-        const response = await fetch(`${API_BASE}/register`, {
+        const response = await fetch(`${API_BASE_URL}/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nombre, email, password })
