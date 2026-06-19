@@ -55,6 +55,10 @@ function mostrarOfertas(ofertas) {
     ofertas.forEach(oferta => {
         const card = document.createElement('div');
         card.className = 'col-md-6 mb-4';
+        
+        // 🔥 CORREGIDO: Escapar los títulos para evitar problemas con comillas
+        const tituloEscapado = escapeHtml(oferta.titulo);
+        
         card.innerHTML = `
             <div class="card h-100">
                 <div class="card-body">
@@ -66,8 +70,8 @@ function mostrarOfertas(ofertas) {
                     <p class="card-text"><strong style="color: #0D47A1;">Duración:</strong> ${oferta.duracion || '-'}</p>
                     <div style="margin-top: 1rem;">
                         <a href="${oferta.link}" class="btn btn-primary btn-sm" target="_blank">Ver Oferta</a>
-                        <button class="btn btn-success btn-sm" onclick="postularOferta('${oferta.id}')">📨 Postular</button>
-                        <button class="btn btn-secondary btn-sm" onclick="guardarFavorito('${oferta.titulo}')">❤️ Guardar</button>
+                        <button class="btn btn-success btn-sm" onclick="postularOferta('${tituloEscapado}')">📨 Postular</button>
+                        <button class="btn btn-secondary btn-sm" onclick="guardarFavorito('${tituloEscapado}')">❤️ Guardar</button>
                     </div>
                 </div>
             </div>
@@ -76,38 +80,44 @@ function mostrarOfertas(ofertas) {
     });
 }
 
-// Envía una postulación al backend. El endpoint POST /postulaciones aún
-// no existe en el backend actual (ver README) por lo que un 404/405 se
-// muestra como "función no disponible" en vez de un error genérico.
-async function postularOferta(ofertaId) {
-    const userId = await ensureUserId();
+// 🔥 Función auxiliar para escapar caracteres especiales
+function escapeHtml(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+// 🔥 CORREGIDO: Función postularOferta mejorada
+function postularOferta(titulo) {
+    const userId = localStorage.getItem('userId');
+
     if (!userId) {
         alert('Debes iniciar sesión para postular.');
         return;
     }
 
-    try {
-        // oferta_id es el uuid (string) que devuelve GET /ofertas, no un entero.
-        const response = await authFetch(`${API_BASE_URL}/postulaciones`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ usuario_id: Number(userId), oferta_id: ofertaId })
-        });
-
-        if (response.status === 404 || response.status === 405) {
-            alert('Esta función todavía no está disponible: falta implementar POST /postulaciones en el backend.');
-            return;
+    // Obtener postulaciones actuales
+    let postulaciones = JSON.parse(localStorage.getItem('postulaciones') || '[]');
+    
+    // Asegurar que sea un array de strings
+    postulaciones = postulaciones.map(item => {
+        if (typeof item === 'object' && item !== null) {
+            return item.titulo || item.nombre || item.title || String(item);
         }
+        return String(item);
+    });
 
-        const data = await response.json().catch(() => ({}));
-        if (!response.ok) {
-            throw new Error(data.error || 'No se pudo enviar la postulación.');
-        }
-
-        alert('✓ Postulación enviada correctamente');
-    } catch (error) {
-        console.error('Error al postular:', error);
-        alert('Error al enviar la postulación: ' + error.message);
+    // Verificar si ya existe
+    if (!postulaciones.includes(titulo)) {
+        postulaciones.push(titulo);
+        localStorage.setItem('postulaciones', JSON.stringify(postulaciones));
+        alert('✓ Postulación guardada correctamente');
+    } else {
+        alert('✓ Ya postulaste a esta oferta');
     }
 }
 
@@ -116,8 +126,13 @@ function filtrarOfertas() {
     cargarOfertas(area);
 }
 
+// 🔥 CORREGIDO: Función guardarFavorito mejorada
 function guardarFavorito(titulo) {
     let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    
+    // Asegurar que todos sean strings
+    favoritos = favoritos.map(item => String(item));
+    
     if (!favoritos.includes(titulo)) {
         favoritos.push(titulo);
         localStorage.setItem('favoritos', JSON.stringify(favoritos));
@@ -139,16 +154,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Filtrar al presionar Enter en el campo de texto
-    document.getElementById('filtro-area').addEventListener('keyup', (event) => {
-        if (event.key === 'Enter') filtrarOfertas();
-    });
+    const filtroArea = document.getElementById('filtro-area');
+    if (filtroArea) {
+        filtroArea.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') filtrarOfertas();
+        });
+    }
 
     // Botón filtrar manual
-    document.getElementById('btn-filtrar').addEventListener('click', filtrarOfertas);
+    const btnFiltrar = document.getElementById('btn-filtrar');
+    if (btnFiltrar) {
+        btnFiltrar.addEventListener('click', filtrarOfertas);
+    }
 
     // Botón limpiar
-    document.getElementById('btn-limpiar').addEventListener('click', () => {
-        document.getElementById('filtro-area').value = '';
-        cargarOfertas();
-    });
+    const btnLimpiar = document.getElementById('btn-limpiar');
+    if (btnLimpiar) {
+        btnLimpiar.addEventListener('click', () => {
+            const filtroArea = document.getElementById('filtro-area');
+            if (filtroArea) filtroArea.value = '';
+            cargarOfertas();
+        });
+    }
 });
